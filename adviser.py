@@ -6,8 +6,6 @@ from google.cloud.firestore_v1 import FieldFilter
 from st_pages import Page, show_pages, add_page_title
 from datetime import datetime,time
 
-import credent
-
 try:
     cred = credentials.Certificate("cert.json")
     firebase_admin.initialize_app(cred)
