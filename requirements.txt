@@ -1,0 +1,9 @@
+firebase_admin
+google-cloud-firestore
+streamlit
+pandas
+datetime
+st-pages
+pyrebase4
+streamlit_js_eval
+streamlit_extras
