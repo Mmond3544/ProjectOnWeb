@@ -132,28 +132,26 @@ for doc in docs:
         a = doc.to_dict()
     for std in a:
             student = db.collection("student").document(std).get()
-            if doc.to_dict()[std] == True:
-                timediff = doc.to_dict()[f"{std}_time"] - doc.to_dict()['start_test']
-                stdtime = doc.to_dict()[f"{std}_time"]
-                time1 = datetime.strptime(str(stdtime), '%Y-%m-%d %H:%M:%S.%f%z').time()
-                time1 = time1.strftime('%H:%M:%S')
-                date = datetime.strptime(str(stdtime), '%Y-%m-%d %H:%M:%S.%f%z').date()
-                date = date.strftime('%d/%m/%Y')
-                new_timediff = datetime.strptime(str(timediff), '%H:%M:%S.%f').time()
-                latetime = time(0, 15, 0, 0)
-                if new_timediff > latetime:
-                    txt = f"{student.to_dict()['name']} {student.to_dict()['surname']} เข้าสอบวิชา {sj} วันที่ {date} เวลา {time1}"
-                    st.markdown(
-                        f"""<p style="font-family: 'Kanit', sans-serif; color:#c4a841;font-size:18px;">{txt}</p>""",
-                        unsafe_allow_html=True)
-                else:
-                    txt = f"{student.to_dict()['name']} {student.to_dict()['surname']} เข้าสอบวิชา {sj} วันที่ {date} เวลา {time1}"
-                    st.markdown(f"""<p style="font-family: 'Kanit', sans-serif; color:#68d474;font-size:18px;">{txt}</p>""",
-                            unsafe_allow_html=True)
-                # st.write(f"{student.to_dict()['name']} {student.to_dict()['surname']} เข้าสอบวิชา {doc.id} วันที่ {date} เวลา {time1}")
-            elif doc.to_dict()[std] == False:
-                txt = f"{student.to_dict()['name']} {student.to_dict()['surname']} ไม่ได้เข้าสอบวิชา {sj}"
-                st.markdown(f"""<p style="font-family: 'Kanit', sans-serif; color:#d46868;font-size:18px;">{txt}</p>""",
-                            unsafe_allow_html=True)
-                # st.write(f"{student.to_dict()['name']} {student.to_dict()['surname']} ไม่ได้เข้าสอบวิชา {doc.id}")
-
+            try:
+                if doc.to_dict()[std] == True:
+                    timediff = doc.to_dict()[f"{std}_time"] - doc.to_dict()['start_test']
+                    stdtime = doc.to_dict()[f"{std}_time"]
+                    time1 = datetime.strptime(str(stdtime), '%Y-%m-%d %H:%M:%S.%f%z').time()
+                    time1 = time1.strftime('%H:%M:%S')
+                    date = datetime.strptime(str(stdtime), '%Y-%m-%d %H:%M:%S.%f%z').date()
+                    date = date.strftime('%d/%m/%Y')
+                    new_timediff = datetime.strptime(str(timediff), '%H:%M:%S.%f').time()
+                    latetime = time(0, 15, 0, 0)
+                    if new_timediff > latetime:
+                        txt = f"{student.to_dict()['name']} {student.to_dict()['surname']} เข้าสอบวิชา {sj} วันที่ {date} เวลา {time1}"
+                        st.markdown(f"""<p style="font-family: 'Kanit', sans-serif; color:#c4a841;font-size:18px;">{txt}</p>""",unsafe_allow_html=True)
+                    else:
+                        txt = f"{student.to_dict()['name']} {student.to_dict()['surname']} เข้าสอบวิชา {sj} วันที่ {date} เวลา {time1}"
+                        st.markdown(f"""<p style="font-family: 'Kanit', sans-serif; color:#68d474;font-size:18px;">{txt}</p>""",unsafe_allow_html=True)
+                        # st.write(f"{student.to_dict()['name']} {student.to_dict()['surname']} เข้าสอบวิชา {doc.id} วันที่ {date} เวลา {time1}")
+                elif doc.to_dict()[std] == False:
+                    txt = f"{student.to_dict()['name']} {student.to_dict()['surname']} ไม่ได้เข้าสอบวิชา {sj}"
+                    st.markdown(f"""<p style="font-family: 'Kanit', sans-serif; color:#d46868;font-size:18px;">{txt}</p>""",unsafe_allow_html=True)
+                    # st.write(f"{student.to_dict()['name']} {student.to_dict()['surname']} ไม่ได้เข้าสอบวิชา {doc.id}")
+            except:
+                st.warning('No such document!', icon="⚠️")
