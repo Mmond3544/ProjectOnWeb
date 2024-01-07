@@ -5,7 +5,6 @@ import pyrebase
 import pandas as pd
 from google.cloud.firestore_v1 import FieldFilter
 from st_pages import Page, Section, add_page_title, show_pages, show_pages_from_config
-import credent
 from streamlit_js_eval import streamlit_js_eval
 from streamlit_extras.switch_page_button import switch_page
 from datetime import datetime,time
