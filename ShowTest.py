@@ -32,6 +32,7 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+st.markdown("""<style>.st-emotion-cache-k7vsyb a {display: none;}</style>""", unsafe_allow_html=True)
 for doc in docs:
     TakeTheExam1 = 0
     NotTakeTheExam1 = 0
