@@ -73,7 +73,7 @@ for doc in docs:
         testname.append(getID[0])
         data2 = pd.DataFrame({"True": [TakeTheExam1],"Late":[late1],"False": [NotTakeTheExam1]})
         sjName = db.collection("subject").document(getID[0]).get()
-        data2.index = [f"{sjName.to_dict()["name"]}-{doc.to_dict()["type"]}"]
+        data2.index = [f"{sjName.to_dict()['name']}-{doc.to_dict()['type']}"]
         data = pd.concat([data, data2])
     else:
         st.write('No such document!')
