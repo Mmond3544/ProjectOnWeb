@@ -73,7 +73,7 @@ for doc in docs:
         testname.append(getID[0])
         data2 = pd.DataFrame({"True": [TakeTheExam1],"Late":[late1],"False": [NotTakeTheExam1]})
         sjName = db.collection("subject").document(getID[0]).get()
-        data2.index = [sjName.to_dict()["name"]]
+        data2.index = [f"{sjName.to_dict()["name"]}-{doc.to_dict()["type"]}"]
         data = pd.concat([data, data2])
     else:
         st.write('No such document!')
@@ -121,6 +121,9 @@ for doc in docs:
                 unsafe_allow_html=True)
     container.markdown(f"""<h5 style="font-family: 'Kanit', sans-serif; color:#6896d4;">เวลาเริ่มสอบ : {startTime1}</h5>""",
                        unsafe_allow_html=True)
+    container.markdown(
+        f"""<h5 style="font-family: 'Kanit', sans-serif; color:#6896d4;">ประเภทการสอบ : {doc.to_dict()["type"]}</h5>""",
+        unsafe_allow_html=True)
     if studentSelect:
         stdsplit = studentSelect.split(" ")
         getStdID = (db.collection("student")
