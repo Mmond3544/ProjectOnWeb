@@ -43,6 +43,7 @@ st.markdown("""
         .css-c11ae4ac {display: none}
         </style>
         """, unsafe_allow_html=True)
+db = firestore.client()
 def login():
     try:
         auth.sign_in_with_email_and_password(email,password)
@@ -60,7 +61,8 @@ def welcome():
     show_pages([
         Page("singin.py", "Home"),
         Page("ShowTest.py", "Test"),
-        Page("adviser.py", "Adviser")
+        Page("adviser.py", "Adviser"),
+        Page("chief.py", "All Test")
     ])
     with st.sidebar:
         if st.sidebar.button("Reset Password"):
@@ -126,7 +128,21 @@ if 'email' not in st.session_state:
             placeholder.empty()
             resetBtn.empty()
             home()
-            welcome()
+            getRole = db.collection("teacher").document(email).get()
+            try:
+                checkRole = getRole.to_dict()['chief']
+            except:
+                checkRole = False
+            if checkRole:
+                welcome()
+            else:
+                st.markdown("""<style>[data-testid="stSidebar"]{visibility: visible;}</style>""",
+                            unsafe_allow_html=True)
+                show_pages([
+                    Page("singin.py", "Home"),
+                    Page("ShowTest.py", "Test"),
+                    Page("adviser.py", "Adviser")
+                ])
             #streamlit_js_eval(js_expressions="parent.window.location.reload()")
         else:
             st.error("Your Email/Password incorrect")

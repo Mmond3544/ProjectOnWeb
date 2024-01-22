@@ -5,7 +5,6 @@ from firebase_admin import firestore
 from google.cloud.firestore_v1 import FieldFilter
 from st_pages import Page, show_pages, add_page_title
 from datetime import datetime,time
-
 try:
     cred = credentials.Certificate("cert.json")
     firebase_admin.initialize_app(cred)
@@ -22,9 +21,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 subject = (
-        db.collection("test")
-        .where(filter=FieldFilter("adviser", "==", st.session_state['email']))
-        .stream()
+        db.collection("test").stream()
     )
 getTestName = []
 stdname = []
@@ -44,17 +41,16 @@ for s in subject:
                 stdname.append(x)
 subjectSelect = st.sidebar.selectbox("Subject",getTestName,index=None,placeholder="Select Subject...")
 studentSelect = st.sidebar.selectbox("Student",stdname,index=None,placeholder="Select Student...")
+
 if subjectSelect:
     docs = (
         db.collection("test")
-        .where(filter=FieldFilter("adviser", "==", st.session_state['email']))
         .where(filter=FieldFilter("subject", "==", subjectSelect))
         .stream()
     )
 else:
     docs = (
         db.collection("test")
-        .where(filter=FieldFilter("adviser", "==", st.session_state['email']))
         .stream()
     )
 room = []
