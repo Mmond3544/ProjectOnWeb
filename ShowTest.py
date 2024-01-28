@@ -1,4 +1,5 @@
 import firebase_admin
+import pytz
 from firebase_admin import credentials
 from firebase_admin import firestore
 from google.cloud.firestore_v1 import FieldFilter
@@ -45,11 +46,6 @@ for doc in docs:
             if doc.to_dict()[std] == True:
                 #subject = db.collection("subject").document(doc.id).get()
                 timediff = doc.to_dict()[f"{std}_time"] - doc.to_dict()['start_test']
-                stdtime = doc.to_dict()[f"{std}_time"]
-                time1 = datetime.strptime(str(stdtime), '%Y-%m-%d %H:%M:%S.%f%z').time()
-                time1 = time1.strftime('%H:%M:%S')
-                date = datetime.strptime(str(stdtime), '%Y-%m-%d %H:%M:%S.%f%z').date()
-                date = date.strftime('%d/%m/%Y')
                 new_timediff = datetime.strptime(str(timediff), '%H:%M:%S.%f').time()
                 latetime = time(0,15,0,0)
                 x = f"{student.to_dict()['name']} {student.to_dict()['surname']}"
@@ -73,7 +69,7 @@ for doc in docs:
         testname.append(getID[0])
         data2 = pd.DataFrame({"True": [TakeTheExam1],"Late":[late1],"False": [NotTakeTheExam1]})
         sjName = db.collection("subject").document(getID[0]).get()
-        data2.index = [f"{sjName.to_dict()['name']}-{doc.to_dict()['type']}"]
+        data2.index = [f"{sjName.to_dict()['name']}-{doc.to_dict()['type']}-{doc.to_dict()['room']}"]
         data = pd.concat([data, data2])
     else:
         st.write('No such document!')
@@ -112,6 +108,8 @@ for doc in docs:
                     unsafe_allow_html=True)
     # st.subheader(doc.id)
     startTime = doc.to_dict()[f"start_test"]
+    utc_plus_7 = pytz.timezone('Asia/Bangkok')
+    startTime = startTime.astimezone(utc_plus_7)
     startTime1 = datetime.strptime(str(startTime), '%Y-%m-%d %H:%M:%S.%f%z').time()
     startTime1 = startTime1.strftime('%H:%M:%S')
     date = datetime.strptime(str(startTime), '%Y-%m-%d %H:%M:%S.%f%z').date()
@@ -140,6 +138,8 @@ for doc in docs:
                 if doc.to_dict()[std] == True:
                     timediff = doc.to_dict()[f"{std}_time"] - doc.to_dict()['start_test']
                     stdtime = doc.to_dict()[f"{std}_time"]
+                    utc_plus_7 = pytz.timezone('Asia/Bangkok')
+                    stdtime = stdtime.astimezone(utc_plus_7)
                     time1 = datetime.strptime(str(stdtime), '%Y-%m-%d %H:%M:%S.%f%z').time()
                     time1 = time1.strftime('%H:%M:%S')
                     date = datetime.strptime(str(stdtime), '%Y-%m-%d %H:%M:%S.%f%z').date()

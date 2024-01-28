@@ -7,3 +7,4 @@ st-pages
 pyrebase4
 streamlit_js_eval
 streamlit_extras
+pytz

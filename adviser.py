@@ -1,4 +1,5 @@
 import firebase_admin
+import pytz
 import streamlit as st
 from firebase_admin import credentials
 from firebase_admin import firestore
@@ -69,6 +70,22 @@ for doc in docs:
     st.markdown(f"""<h1 style="font-family: 'Kanit', sans-serif; color:#6896d4;">{sj}</h1>""",
                     unsafe_allow_html=True)
     # st.subheader(doc.id)
+    startTime = doc.to_dict()[f"start_test"]
+    utc_plus_7 = pytz.timezone('Asia/Bangkok')
+    startTime = startTime.astimezone(utc_plus_7)
+    startTime1 = datetime.strptime(str(startTime), '%Y-%m-%d %H:%M:%S.%f%z').time()
+    startTime1 = startTime1.strftime('%H:%M:%S')
+    date = datetime.strptime(str(startTime), '%Y-%m-%d %H:%M:%S.%f%z').date()
+    date = date.strftime('%d/%m/%Y')
+    container = st.container(border=True)
+    container.markdown(f"""<h5 style="font-family: 'Kanit', sans-serif; color:#6896d4;">วันที่สอบ : {date}</h5>""",
+                       unsafe_allow_html=True)
+    container.markdown(
+        f"""<h5 style="font-family: 'Kanit', sans-serif; color:#6896d4;">เวลาเริ่มสอบ : {startTime1}</h5>""",
+        unsafe_allow_html=True)
+    container.markdown(
+        f"""<h5 style="font-family: 'Kanit', sans-serif; color:#6896d4;">ประเภทการสอบ : {doc.to_dict()["type"]}</h5>""",
+        unsafe_allow_html=True)
     if studentSelect:
         stdsplit = studentSelect.split(" ")
         getStdID = (db.collection("student")
@@ -84,6 +101,8 @@ for doc in docs:
             if doc.to_dict()[std] == True:
                 timediff = doc.to_dict()[f"{std}_time"] - doc.to_dict()['start_test']
                 stdtime = doc.to_dict()[f"{std}_time"]
+                utc_plus_7 = pytz.timezone('Asia/Bangkok')
+                stdtime = stdtime.astimezone(utc_plus_7)
                 time1 = datetime.strptime(str(stdtime), '%Y-%m-%d %H:%M:%S.%f%z').time()
                 time1 = time1.strftime('%H:%M:%S')
                 date = datetime.strptime(str(stdtime), '%Y-%m-%d %H:%M:%S.%f%z').date()

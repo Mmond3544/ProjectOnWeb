@@ -143,12 +143,44 @@ if 'email' not in st.session_state:
                     Page("ShowTest.py", "Test"),
                     Page("adviser.py", "Adviser")
                 ])
+                with st.sidebar:
+                    if st.sidebar.button("Reset Password"):
+                        st.toast(f"URL for reset your password has send to Email : {st.session_state['email']}",
+                                 icon="✅")
+                        auth.send_password_reset_email(st.session_state['email'])
+
+                    if st.sidebar.button("Sing Out"):
+                        sino()
+                        hideside()
             #streamlit_js_eval(js_expressions="parent.window.location.reload()")
         else:
             st.error("Your Email/Password incorrect")
 else:
     home()
-    welcome()
+    getRole = db.collection("teacher").document(st.session_state['email']).get()
+    try:
+        checkRole = getRole.to_dict()['chief']
+    except:
+        checkRole = False
+    if checkRole:
+        welcome()
+    else:
+        st.markdown("""<style>[data-testid="stSidebar"]{visibility: visible;}</style>""",
+                    unsafe_allow_html=True)
+        show_pages([
+            Page("singin.py", "Home"),
+            Page("ShowTest.py", "Test"),
+            Page("adviser.py", "Adviser")
+        ])
+        with st.sidebar:
+            if st.sidebar.button("Reset Password"):
+                st.toast(f"URL for reset your password has send to Email : {st.session_state['email']}",
+                         icon="✅")
+                auth.send_password_reset_email(st.session_state['email'])
+
+            if st.sidebar.button("Sing Out"):
+                sino()
+                hideside()
 st.markdown("""
         <style>
         .css-c11ae4ac {display: none}
