@@ -107,13 +107,23 @@ for doc in docs:
     st.markdown(f"""<h1 style="font-family: 'Kanit', sans-serif; color:#6896d4;">{sj} - {doc.to_dict()['room']}</h1>""",
                     unsafe_allow_html=True)
     # st.subheader(doc.id)
+    term = doc.to_dict()["term"]
     startTime = doc.to_dict()[f"start_test"]
     utc_plus_7 = pytz.timezone('Asia/Bangkok')
     startTime = startTime.astimezone(utc_plus_7)
     startTime1 = datetime.strptime(str(startTime), '%Y-%m-%d %H:%M:%S.%f%z').time()
     startTime1 = startTime1.strftime('%H:%M:%S')
     date = datetime.strptime(str(startTime), '%Y-%m-%d %H:%M:%S.%f%z').date()
-    date = date.strftime('%d/%m/%Y')
+    date = date.strftime('%d/%m')
+    year = datetime.strptime(str(startTime), '%Y-%m-%d %H:%M:%S.%f%z').date()
+    year = year.strftime('%Y')
+    month = datetime.strptime(str(startTime), '%Y-%m-%d %H:%M:%S.%f%z').date()
+    month = month.strftime('%m')
+    y = int(year)+543
+    date = date + "/" + str(y)
+    if month == "01" or month == "02" or month == "03" or month == "04":
+        y = y - 1
+    term = str(term)+"/"+str(y)
     container = st.container(border=True)
     container.markdown(f"""<h5 style="font-family: 'Kanit', sans-serif; color:#6896d4;">วันที่สอบ : {date}</h5>""",
                 unsafe_allow_html=True)
@@ -121,6 +131,9 @@ for doc in docs:
                        unsafe_allow_html=True)
     container.markdown(
         f"""<h5 style="font-family: 'Kanit', sans-serif; color:#6896d4;">ประเภทการสอบ : {doc.to_dict()["type"]}</h5>""",
+        unsafe_allow_html=True)
+    container.markdown(
+        f"""<h5 style="font-family: 'Kanit', sans-serif; color:#6896d4;">ภาคการศึกษาที่ : {term}</h5>""",
         unsafe_allow_html=True)
     if studentSelect:
         stdsplit = studentSelect.split(" ")
@@ -142,8 +155,12 @@ for doc in docs:
                     stdtime = stdtime.astimezone(utc_plus_7)
                     time1 = datetime.strptime(str(stdtime), '%Y-%m-%d %H:%M:%S.%f%z').time()
                     time1 = time1.strftime('%H:%M:%S')
-                    date = datetime.strptime(str(stdtime), '%Y-%m-%d %H:%M:%S.%f%z').date()
-                    date = date.strftime('%d/%m/%Y')
+                    date = datetime.strptime(str(startTime), '%Y-%m-%d %H:%M:%S.%f%z').date()
+                    date = date.strftime('%d/%m')
+                    year = datetime.strptime(str(startTime), '%Y-%m-%d %H:%M:%S.%f%z').date()
+                    year = year.strftime('%Y')
+                    y = int(year) + 543
+                    date = date + "/" + str(y)
                     new_timediff = datetime.strptime(str(timediff), '%H:%M:%S.%f').time()
                     latetime = time(0, 15, 0, 0)
                     if new_timediff > latetime:
