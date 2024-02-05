@@ -26,6 +26,7 @@ st.markdown("""
         .css-c11ae4ac {display: none}
         </style>
         """, unsafe_allow_html=True)
+st.markdown("""<style>.st-emotion-cache-k7vsyb a {display: none;}</style>""", unsafe_allow_html=True)
 subject = (
         db.collection("test").stream()
     )
