@@ -21,6 +21,11 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+st.markdown("""
+        <style>
+        .css-c11ae4ac {display: none}
+        </style>
+        """, unsafe_allow_html=True)
 subject = (
         db.collection("test").stream()
     )
