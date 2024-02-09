@@ -118,7 +118,7 @@ if 'email' not in st.session_state:
     resetBtn = st.empty()
     hideside()
     with placeholder.form("login"):
-        st.markdown("#### Enter your credentials")
+        st.markdown("#### Comsci - CheckInExam")
         email = st.text_input("Email")
         password = st.text_input("Password", type="password")
         submit = st.form_submit_button("Login")
